@@ -6,20 +6,6 @@ const nav = document.querySelector('.site-nav');
 const reveals = document.querySelectorAll('.reveal');
 const staggerGroups = document.querySelectorAll('.stagger-group');
 const heroBg = document.querySelector('.parallax-bg');
-
-const carousel = document.querySelector('[data-carousel]');
-const carouselTrack = carousel?.querySelector('.carousel-track');
-const carouselViewport = carousel?.querySelector('.carousel-viewport');
-const carouselCards = carouselTrack ? Array.from(carouselTrack.children) : [];
-const carouselPrev = carousel?.querySelector('.carousel-nav.prev');
-const carouselNext = carousel?.querySelector('.carousel-nav.next');
-
-const testimonialCards = Array.from(document.querySelectorAll('.testimonial-card'));
-const testimonialPrev = document.querySelector('.testimonials-slider .slider-nav.prev');
-const testimonialNext = document.querySelector('.testimonials-slider .slider-nav.next');
-
-let carouselIndex = 0;
-let testimonialIndex = 0;
 let rafScroll = null;
 
 const updateHeader = () => {
@@ -59,63 +45,6 @@ staggerGroups.forEach((group) => {
   });
 });
 
-const updateCarousel = () => {
-  if (!carouselTrack || !carouselCards.length || !carouselViewport) return;
-
-  const cardWidth = carouselCards[0].getBoundingClientRect().width;
-  const gap = 16;
-  const viewportWidth = carouselViewport.clientWidth;
-  const offset = Math.max(0, (cardWidth + gap) * carouselIndex - (viewportWidth - cardWidth) / 2);
-
-  carouselTrack.style.transform = `translateX(-${offset}px)`;
-
-  carouselCards.forEach((card, idx) => {
-    const active = idx === carouselIndex;
-    card.classList.toggle('is-active', active);
-    card.classList.toggle('is-side', Math.abs(idx - carouselIndex) === 1 || (!active && window.innerWidth >= 780));
-  });
-};
-
-carouselPrev?.addEventListener('click', () => {
-  carouselIndex = (carouselIndex - 1 + carouselCards.length) % carouselCards.length;
-  updateCarousel();
-});
-
-carouselNext?.addEventListener('click', () => {
-  carouselIndex = (carouselIndex + 1) % carouselCards.length;
-  updateCarousel();
-});
-
-let touchStartX = 0;
-carouselViewport?.addEventListener('touchstart', (event) => {
-  touchStartX = event.touches[0].clientX;
-}, { passive: true });
-
-carouselViewport?.addEventListener('touchend', (event) => {
-  const delta = touchStartX - event.changedTouches[0].clientX;
-  if (Math.abs(delta) < 35) return;
-  carouselIndex = delta > 0
-    ? (carouselIndex + 1) % carouselCards.length
-    : (carouselIndex - 1 + carouselCards.length) % carouselCards.length;
-  updateCarousel();
-}, { passive: true });
-
-const updateTestimonials = (index) => {
-  if (!testimonialCards.length) return;
-  testimonialIndex = (index + testimonialCards.length) % testimonialCards.length;
-
-  testimonialCards.forEach((card, idx) => {
-    card.classList.toggle('active', idx === testimonialIndex);
-  });
-};
-
-testimonialPrev?.addEventListener('click', () => updateTestimonials(testimonialIndex - 1));
-testimonialNext?.addEventListener('click', () => updateTestimonials(testimonialIndex + 1));
-
-if (!reduceMotion && testimonialCards.length) {
-  setInterval(() => updateTestimonials(testimonialIndex + 1), 6500);
-}
-
 const updateParallax = () => {
   if (!heroBg || reduceMotion) return;
 
@@ -139,11 +68,7 @@ window.addEventListener('resize', () => {
     nav?.classList.remove('open');
     menuToggle?.setAttribute('aria-expanded', 'false');
   }
-
-  updateCarousel();
 });
 
 updateHeader();
 updateParallax();
-updateCarousel();
-updateTestimonials(0);

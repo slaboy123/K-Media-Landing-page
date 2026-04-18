@@ -278,7 +278,8 @@ textarea {
 
 .services-grid,
 .team-grid,
-.process-grid {
+.process-grid,
+.portfolio-grid {
   display: grid;
   gap: 14px;
 }
@@ -286,10 +287,9 @@ textarea {
 .service-card,
 .team-member-card,
 .process-card,
-.testimonial-card,
+.project-card,
 .inline-cta,
-.final-box,
-.portfolio-carousel {
+.final-box {
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(14px);
@@ -334,66 +334,49 @@ textarea {
   font-size: 1.03rem;
 }
 
-.portfolio-carousel {
-  border-radius: 24px;
-  padding: 14px;
-  display: grid;
+.portfolio-grid {
   grid-template-columns: 1fr;
-  gap: 10px;
-}
-
-.carousel-viewport {
-  overflow: hidden;
-}
-
-.carousel-track {
-  display: flex;
-  gap: 16px;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-card {
-  flex: 0 0 86%;
   border-radius: 18px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(0, 0, 0, 0.32);
-  transition: transform 0.35s ease, filter 0.35s ease, opacity 0.35s ease;
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 .project-card img {
   height: 240px;
   object-fit: cover;
 }
-.project-card.is-active {
-  transform: scale(1.01);
-}
-.project-card.is-side {
-  filter: blur(1.2px) saturate(0.85);
-  opacity: 0.75;
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(233, 206, 149, 0.5);
+  box-shadow: 0 24px 42px rgba(201, 161, 88, 0.16);
 }
 
 .project-copy {
   padding: 18px;
 }
+.project-copy .project-tag {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(233, 206, 149, 0.35);
+  color: #e9ce95;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 .project-copy h3 {
-  margin: 0;
+  margin: 10px 0 0;
   font-size: 1.2rem;
 }
 .project-copy p {
   margin: 8px 0 0;
   color: rgba(246, 241, 232, 0.78);
   line-height: 1.7;
-}
-
-.carousel-nav,
-.slider-nav {
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-  color: #f6f1e8;
-  font-size: 1.4rem;
 }
 
 .team-grid {
@@ -470,52 +453,6 @@ textarea {
   margin: 0;
   color: rgba(246, 241, 232, 0.78);
   line-height: 1.7;
-}
-
-.testimonials-slider {
-  border-radius: 22px;
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.03);
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-}
-
-.testimonials-track {
-  position: relative;
-  min-height: 220px;
-}
-
-.testimonial-card {
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  padding: 24px;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-.testimonial-card.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-.testimonial-card p {
-  margin: 0 0 16px;
-  line-height: 1.8;
-  font-size: clamp(1rem, 2.3vw, 1.18rem);
-}
-.testimonial-card strong,
-.testimonial-card span {
-  display: block;
-}
-.testimonial-card strong {
-  color: #e9ce95;
-}
-.testimonial-card span {
-  color: rgba(246, 241, 232, 0.78);
-  margin-top: 4px;
 }
 
 .final-cta {
@@ -660,12 +597,8 @@ textarea {
   .process-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .portfolio-carousel {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-  }
-  .project-card {
-    flex-basis: 74%;
+  .portfolio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .project-card img {
     height: 300px;
@@ -688,11 +621,11 @@ textarea {
   .team-grid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
-  .project-card {
-    flex-basis: 68%;
+  .portfolio-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .project-card img {
-    height: 340px;
+    height: 250px;
   }
 }
 @media (min-width: 980px) and (max-width: 1119px) {
