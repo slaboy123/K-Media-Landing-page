@@ -1,15 +1,20 @@
 ﻿const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pointerFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 const header = document.querySelector('.site-header');
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.site-nav');
 const reveals = document.querySelectorAll('.reveal');
 const staggerGroups = document.querySelectorAll('.stagger-group');
+const heroSection = document.querySelector('.hero');
 const heroBg = document.querySelector('.parallax-bg');
+const motionImages = document.querySelectorAll('.project-media img, .member-photo img');
 const carousels = document.querySelectorAll('[data-carousel]');
 const sections = document.querySelectorAll('main section[id]');
 let rafScroll = null;
 let rafCarousel = null;
+
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 const updateHeader = () => {
   header?.classList.toggle('scrolled', window.scrollY > 10);
@@ -78,7 +83,75 @@ const updateParallax = () => {
   if (!heroBg || reduceMotion) return;
 
   const offset = Math.min(window.scrollY * 0.18, 140);
-  heroBg.style.transform = `translateY(${offset}px) scale(1.08)`;
+  heroBg.style.setProperty('--hero-scroll', `${offset}px`);
+};
+
+const updateMediaScrollMotion = () => {
+  if (reduceMotion || !motionImages.length) return;
+
+  const viewportHalf = window.innerHeight / 2;
+
+  motionImages.forEach((img) => {
+    const rect = img.getBoundingClientRect();
+    if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+    const center = rect.top + rect.height / 2;
+    const normalized = clamp((center - viewportHalf) / viewportHalf, -1, 1);
+    const speed = img.closest('.project-media') ? 18 : 12;
+
+    img.style.setProperty('--scroll-shift', `${normalized * speed}px`);
+  });
+};
+
+const setupPointerImageMotion = (img) => {
+  if (reduceMotion || !pointerFine) return;
+
+  const surface = img.parentElement;
+  if (!surface) return;
+
+  const reset = () => {
+    img.style.setProperty('--mx', '0px');
+    img.style.setProperty('--my', '0px');
+  };
+
+  surface.addEventListener('pointermove', (event) => {
+    const rect = surface.getBoundingClientRect();
+    const relX = (event.clientX - rect.left) / rect.width;
+    const relY = (event.clientY - rect.top) / rect.height;
+
+    const moveX = (relX - 0.5) * 14;
+    const moveY = (relY - 0.5) * 12;
+
+    img.style.setProperty('--mx', `${moveX.toFixed(2)}px`);
+    img.style.setProperty('--my', `${moveY.toFixed(2)}px`);
+  });
+
+  surface.addEventListener('pointerleave', reset);
+  surface.addEventListener('pointercancel', reset);
+};
+
+const setupHeroPointerParallax = () => {
+  if (reduceMotion || !pointerFine || !heroSection || !heroBg) return;
+
+  const reset = () => {
+    heroBg.style.setProperty('--hero-mx', '0px');
+    heroBg.style.setProperty('--hero-my', '0px');
+  };
+
+  heroSection.addEventListener('pointermove', (event) => {
+    const rect = heroSection.getBoundingClientRect();
+    const relX = (event.clientX - rect.left) / rect.width;
+    const relY = (event.clientY - rect.top) / rect.height;
+
+    const moveX = (relX - 0.5) * 20;
+    const moveY = (relY - 0.5) * 14;
+
+    heroBg.style.setProperty('--hero-mx', `${moveX.toFixed(2)}px`);
+    heroBg.style.setProperty('--hero-my', `${moveY.toFixed(2)}px`);
+  });
+
+  heroSection.addEventListener('pointerleave', reset);
+  heroSection.addEventListener('pointercancel', reset);
 };
 
 const updateCarouselState = (track, cards, prevButton, nextButton) => {
@@ -169,6 +242,8 @@ const setupCarousel = (track) => {
 };
 
 carousels.forEach(setupCarousel);
+motionImages.forEach(setupPointerImageMotion);
+setupHeroPointerParallax();
 
 window.addEventListener('scroll', () => {
   updateHeader();
@@ -177,6 +252,7 @@ window.addEventListener('scroll', () => {
 
   rafScroll = requestAnimationFrame(() => {
     updateParallax();
+    updateMediaScrollMotion();
     rafScroll = null;
   });
 });
@@ -186,7 +262,11 @@ window.addEventListener('resize', () => {
     nav?.classList.remove('open');
     menuToggle?.setAttribute('aria-expanded', 'false');
   }
+
+  updateParallax();
+  updateMediaScrollMotion();
 });
 
 updateHeader();
 updateParallax();
+updateMediaScrollMotion();

@@ -219,7 +219,12 @@ textarea {
   background-image: url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2200&q=80");
   background-size: cover;
   background-position: center;
-  transform: scale(1.08);
+  --hero-mx: 0px;
+  --hero-my: 0px;
+  --hero-scroll: 0px;
+  transform: translate3d(var(--hero-mx), calc(var(--hero-my) + var(--hero-scroll)), 0) scale(1.08);
+  transition: transform 0.16s linear;
+  will-change: transform;
 }
 
 .hero-overlay {
@@ -492,7 +497,7 @@ textarea {
   opacity: 1;
 }
 .project-card:hover img {
-  transform: scale(1.045);
+  --img-scale: 1.045;
   filter: saturate(1.07);
 }
 .project-card.is-active {
@@ -509,7 +514,13 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  --mx: 0px;
+  --my: 0px;
+  --scroll-shift: 0px;
+  --img-scale: 1;
+  transform: translate3d(var(--mx), calc(var(--my) + var(--scroll-shift)), 0) scale(var(--img-scale));
   transition: transform 0.44s ease, filter 0.44s ease;
+  will-change: transform, filter;
 }
 
 .project-copy {
@@ -599,6 +610,18 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  --mx: 0px;
+  --my: 0px;
+  --scroll-shift: 0px;
+  --img-scale: 1;
+  transform: translate3d(var(--mx), calc(var(--my) + var(--scroll-shift)), 0) scale(var(--img-scale));
+  transition: transform 0.4s ease, filter 0.4s ease;
+  will-change: transform, filter;
+}
+
+.team-member-card:hover .member-photo img {
+  --img-scale: 1.06;
+  filter: saturate(1.06);
 }
 
 .services-track {
