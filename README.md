@@ -21,11 +21,11 @@ Este projeto e um site estatico com:
 - CSS compilado
 - JavaScript vanilla
 - Node.js (para gerenciar dependencias)
-- Pacote `motion` instalado via npm
+- Sass (dev dependency) para gerar o CSS a partir do SCSS
 
 ## Estrutura de arquivos
 
-- `Index.html`: estrutura da pagina
+- `index.html`: estrutura da pagina
 - `style.scss`: estilos fonte (editar aqui)
 - `style.css`: CSS compilado usado pela pagina
 - `style.css.map`: source map do CSS
@@ -42,12 +42,12 @@ npm install
 
 ### 2. Rodar o projeto
 
-Como o projeto e estatico, voce pode abrir o `Index.html` direto no navegador.
+Como o projeto e estatico, voce pode abrir o `index.html` direto no navegador.
 
 Opcao recomendada (servidor local):
 
 - Use a extensao Live Server no VS Code
-- Clique com o botao direito em `Index.html`
+- Clique com o botao direito em `index.html`
 - Selecione "Open with Live Server"
 
 ## Fluxo de edicao de estilos
@@ -76,6 +76,12 @@ Por ser um projeto estatico, pode ser publicado facilmente em:
 - GitHub Pages
 - Netlify
 - Vercel (modo estatico)
+
+### Deploy na Vercel
+
+- O projeto ja esta preparado com `index.html` em lowercase (importante para ambiente Linux)
+- O arquivo `vercel.json` adiciona redirect de `/Index.html` para `/` e cabecalhos basicos de seguranca
+- Para publicar, basta importar o repositorio na Vercel e usar as configuracoes padrao
 
 ## Melhorias sugeridas
 

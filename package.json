@@ -1,5 +1,12 @@
 {
-  "dependencies": {
-    "motion": "^12.38.0"
+  "name": "k-media-landing-page",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build:css": "sass style.scss style.css --no-source-map",
+    "watch:css": "sass --watch style.scss:style.css"
+  },
+  "devDependencies": {
+    "sass": "^1.99.0"
   }
 }
