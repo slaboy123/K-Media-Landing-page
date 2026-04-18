@@ -16,7 +16,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Sora', sans-serif;
+  font-family: 'Inter', 'General Sans', 'Satoshi', sans-serif;
   color: $white;
   background:
     radial-gradient(circle at 15% 10%, rgba(233, 206, 149, 0.16), transparent 33%),
@@ -64,10 +64,12 @@ textarea {
 
   h2 {
     margin: 12px 0 0;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 5vw, 3.6rem);
-    line-height: 1.05;
-    max-width: 18ch;
+    font-family: 'Inter', 'General Sans', 'Satoshi', sans-serif;
+    font-size: clamp(1.7rem, 4vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    max-width: 16ch;
+    font-weight: 800;
   }
 
   &.center {
@@ -115,7 +117,7 @@ textarea {
   place-items: center;
   border-radius: 12px;
   color: $black;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', 'General Sans', 'Satoshi', sans-serif;
   font-size: 1.7rem;
   font-weight: 800;
   background: linear-gradient(145deg, $gold-light, $gold);
@@ -246,10 +248,11 @@ textarea {
 
   h1 {
     margin: 14px 0;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.2rem, 8vw, 5.8rem);
+    font-family: 'Inter', 'General Sans', 'Satoshi', sans-serif;
+    font-size: clamp(2.4rem, 7vw, 5.6rem);
     line-height: 0.98;
     letter-spacing: -0.02em;
+    font-weight: 800;
     text-wrap: balance;
   }
 }
@@ -267,7 +270,7 @@ textarea {
   margin: 0;
   max-width: 60ch;
   color: $text-soft;
-  line-height: 1.8;
+  line-height: 1.7;
 }
 
 .hero-actions {
@@ -308,6 +311,76 @@ textarea {
   gap: 14px;
 }
 
+.carousel-shell {
+  position: relative;
+}
+
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 4px 52px 14px;
+  margin-inline: -4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.carousel-card {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  height: 100%;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 8, 8, 0.78);
+  color: $white;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.22);
+  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+
+  span {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &:hover {
+    border-color: rgba(233, 206, 149, 0.42);
+    transform: translateY(-50%) scale(1.04);
+  }
+
+  &.is-disabled {
+    opacity: 0.28;
+    pointer-events: none;
+  }
+}
+
+.carousel-prev {
+  left: -2px;
+}
+
+.carousel-next {
+  right: -2px;
+}
+
 .service-card,
 .team-member-card,
 .process-card,
@@ -315,51 +388,69 @@ textarea {
 .inline-cta,
 .final-box {
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035));
+  backdrop-filter: blur(16px);
 }
 
 .service-card {
-  border-radius: 20px;
+  border-radius: 24px;
   padding: 22px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  min-height: 220px;
+  width: clamp(250px, 28vw, 320px);
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 42px rgba(201, 161, 88, 0.16);
+    transform: translateY(-6px);
+    box-shadow: 0 24px 42px rgba(201, 161, 88, 0.18);
+    border-color: rgba(233, 206, 149, 0.45);
+  }
+
+  &.is-active {
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(233, 206, 149, 0.58);
+    box-shadow: 0 28px 48px rgba(201, 161, 88, 0.2);
+  }
+
+  .card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(233, 206, 149, 0.22);
+    background: rgba(201, 161, 88, 0.08);
+    color: $gold-light;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
   }
 
   h3 {
     margin: 0;
-    font-size: 1.14rem;
+    font-size: 1.02rem;
+    line-height: 1.2;
   }
-
-  p {
-    margin: 10px 0 14px;
-    color: $text-soft;
-    line-height: 1.7;
-  }
-
-  a {
-    color: $gold-light;
-    font-size: 0.84rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-}
-
-.inline-cta {
-  margin-top: 20px;
-  border-radius: 22px;
-  padding: 24px;
-  display: grid;
-  gap: 14px;
 
   p {
     margin: 0;
     color: $text-soft;
-    font-size: 1.03rem;
+    line-height: 1.65;
+    font-size: 0.92rem;
+    line-clamp: 2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 
@@ -368,24 +459,60 @@ textarea {
 }
 
 .project-card {
-  border-radius: 18px;
+  border-radius: 24px;
   overflow: hidden;
-  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  width: clamp(270px, 29vw, 340px);
+  min-height: 100%;
+  position: relative;
+  transition: transform 0.4s ease, border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
 
-  img {
-    height: 240px;
-    object-fit: cover;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(201, 161, 88, 0.12), transparent 28%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
   }
 
   &:hover {
-    transform: translateY(-6px);
+    transform: translateY(-8px);
     border-color: rgba(233, 206, 149, 0.5);
-    box-shadow: 0 24px 42px rgba(201, 161, 88, 0.16);
+    box-shadow: 0 28px 48px rgba(201, 161, 88, 0.18);
+
+    &::before {
+      opacity: 1;
+    }
+
+    img {
+      transform: scale(1.05);
+      filter: saturate(1.08);
+    }
+  }
+
+  &.is-active {
+    transform: translateY(-10px) scale(1.01);
+    border-color: rgba(233, 206, 149, 0.6);
+    box-shadow: 0 30px 54px rgba(201, 161, 88, 0.2);
+  }
+}
+
+.project-media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease, filter 0.45s ease;
   }
 }
 
 .project-copy {
-  padding: 18px;
+  padding: 18px 18px 20px;
 
   .project-tag {
     display: inline-flex;
@@ -409,7 +536,13 @@ textarea {
   p {
     margin: 8px 0 0;
     color: $text-soft;
-    line-height: 1.7;
+    line-height: 1.6;
+    font-size: 0.92rem;
+    line-clamp: 2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 
@@ -425,45 +558,47 @@ textarea {
 }
 
 .team-member-card {
-  border-radius: 18px;
+  border-radius: 24px;
   padding: 18px;
   display: grid;
+  justify-items: center;
   gap: 10px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  text-align: center;
+  width: clamp(210px, 22vw, 240px);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-7px);
     border-color: rgba(233, 206, 149, 0.5);
-    box-shadow: 0 18px 34px rgba(201, 161, 88, 0.14);
+    box-shadow: 0 22px 38px rgba(201, 161, 88, 0.16);
+  }
+
+  &.is-active {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(233, 206, 149, 0.56);
+    box-shadow: 0 24px 40px rgba(201, 161, 88, 0.18);
   }
 
   h3 {
     margin: 2px 0 0;
-    font-size: 1.04rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
 
   span {
     color: $gold-light;
-    font-size: 0.74rem;
+    font-size: 0.7rem;
     letter-spacing: 0.09em;
     text-transform: uppercase;
     font-weight: 700;
   }
-
-  p {
-    margin: 0;
-    color: $text-soft;
-    line-height: 1.68;
-    font-size: 0.93rem;
-  }
 }
 
 .member-photo {
-  width: 78px;
-  height: 78px;
-  border-radius: 14px;
+  width: 86px;
+  height: 86px;
+  border-radius: 18px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.04);
@@ -475,6 +610,18 @@ textarea {
   }
 }
 
+.services-track {
+  grid-auto-columns: clamp(250px, 28vw, 320px);
+}
+
+.portfolio-track {
+  grid-auto-columns: clamp(270px, 29vw, 340px);
+}
+
+.team-track {
+  grid-auto-columns: clamp(210px, 22vw, 240px);
+}
+
 .process-card {
   border-radius: 20px;
   padding: 22px;
@@ -483,7 +630,7 @@ textarea {
     color: $gold-light;
     font-weight: 800;
     font-size: 1.4rem;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', 'General Sans', 'Satoshi', sans-serif;
   }
 
   h3 {
@@ -509,9 +656,11 @@ textarea {
 
   h2 {
     margin: 12px 0;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', 'General Sans', 'Satoshi', sans-serif;
     font-size: clamp(2rem, 7vw, 4.8rem);
     line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
   }
 
   p {
@@ -646,32 +795,23 @@ textarea {
     flex-wrap: wrap;
   }
 
-  .services-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .carousel-track {
+    padding-inline: 54px;
   }
 
-  .team-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .carousel-arrow {
+    width: 44px;
+    height: 44px;
   }
 
-  .process-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .service-card,
+  .project-card,
+  .team-member-card {
+    width: auto;
   }
 
-  .portfolio-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .project-card {
-    img {
-      height: 300px;
-    }
-  }
-
-  .inline-cta {
-    margin-top: 28px;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
+  .project-media {
+    aspect-ratio: 1.08;
   }
 
   .footer-inner {
@@ -686,22 +826,48 @@ textarea {
     padding: 112px 0;
   }
 
-  .team-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+  .carousel-track {
+    padding-inline: 58px;
   }
 
-  .portfolio-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .services-track {
+    grid-auto-columns: clamp(260px, 24vw, 300px);
   }
 
-  .project-card img {
-    height: 250px;
+  .portfolio-track {
+    grid-auto-columns: clamp(280px, 25vw, 320px);
+  }
+
+  .team-track {
+    grid-auto-columns: clamp(220px, 18vw, 240px);
   }
 }
 
-@media (min-width: 980px) and (max-width: 1119px) {
-  .team-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+@media (max-width: 779px) {
+  .carousel-track {
+    padding-inline: 16px;
+    margin-inline: 0;
+    gap: 14px;
+  }
+
+  .carousel-arrow {
+    display: none;
+  }
+
+  .services-track,
+  .portfolio-track,
+  .team-track {
+    grid-auto-columns: 84%;
+  }
+
+  .service-card,
+  .project-card,
+  .team-member-card {
+    width: auto;
+  }
+
+  .project-media {
+    aspect-ratio: 1.02;
   }
 }
 
