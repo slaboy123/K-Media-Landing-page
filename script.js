@@ -7,6 +7,7 @@ const reveals = document.querySelectorAll('.reveal');
 const staggerGroups = document.querySelectorAll('.stagger-group');
 const heroBg = document.querySelector('.parallax-bg');
 const carousels = document.querySelectorAll('[data-carousel]');
+const sections = document.querySelectorAll('main section[id]');
 let rafScroll = null;
 let rafCarousel = null;
 
@@ -25,6 +26,32 @@ nav?.querySelectorAll('a').forEach((link) => {
     menuToggle?.setAttribute('aria-expanded', 'false');
   });
 });
+
+const navLinks = nav ? Array.from(nav.querySelectorAll('a[href^="#"]')) : [];
+
+const setActiveNavLink = (sectionId) => {
+  navLinks.forEach((link) => {
+    const target = link.getAttribute('href') === `#${sectionId}`;
+    link.classList.toggle('is-active', target);
+  });
+};
+
+if (sections.length) {
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      setActiveNavLink(entry.target.id);
+    });
+  }, {
+    threshold: 0.45,
+    rootMargin: '-10% 0px -35% 0px',
+  });
+
+  sections.forEach((section) => {
+    sectionObserver.observe(section);
+  });
+}
 
 const revealObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach((entry) => {
@@ -102,6 +129,7 @@ const setupCarousel = (track) => {
 
   track.addEventListener('wheel', (event) => {
     if (reduceMotion) return;
+    if (window.innerWidth < 780) return;
 
     const hasHorizontalIntent = Math.abs(event.deltaX) > Math.abs(event.deltaY);
     if (hasHorizontalIntent) return;
